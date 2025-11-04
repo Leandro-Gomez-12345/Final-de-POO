@@ -1,0 +1,16 @@
+ID|Titulo|Categoria|Precio
+1|Laptop Gaming MSI|Electrónica|2800000
+2|iPhone 15 Pro|Electrónica|4200000
+3|Auriculares Sony WH-1000XM5|Electrónica|850000
+4|Smart TV Samsung 55|Electrónica|1900000
+5|Camiseta Polo Ralph Lauren|Ropa|180000
+6|Jeans Levi's 501|Ropa|320000
+7|Chaqueta Nike|Ropa|450000
+8|Zapatos Adidas Ultraboost|Ropa|520000
+9|Sofá Seccional|Hogar|1800000
+10|Mesa de Comedor|Hogar|750000
+11|Cafetera Oster|Hogar|280000
+12|Aspiradora Electrolux|Hogar|420000
+13|Bicicleta Trek|Deportes|1200000
+14|Raqueta de Tenis Wilson|Deportes|185000
+15|Perfume Hugo Boss|Belleza|320000
