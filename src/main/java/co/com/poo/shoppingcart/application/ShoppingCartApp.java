@@ -64,7 +64,7 @@ public class ShoppingCartApp {
                     break; // Salir del bucle si la entrada es válida
                 } catch (Exception e) {
                     System.out.println("Entrada inválida. Por favor ingrese un número.");
-                    scanner.nextLine(); // Limpiar el buffer del scanner
+                    scanner.nextLine();
                 }
             }
             
