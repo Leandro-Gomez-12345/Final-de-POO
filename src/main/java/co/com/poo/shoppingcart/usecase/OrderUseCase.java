@@ -9,7 +9,7 @@ import java.util.Map;
 public class OrderUseCase {
     private final CartRepository cartRepository;
     private final Map<String, Order> orders; // Almacenamiento interno de órdenes
-    
+
     // Constantes para la regla de descuento
     private static final double DISCOUNT_THRESHOLD = 100000.0; // Cantidad mínima para aplicar descuento
     private static final double DISCOUNT_PERCENTAGE = 0.05; // 5%
@@ -26,26 +26,26 @@ public class OrderUseCase {
      */
     public Order createOrder() {
         Cart cart = cartRepository.getCart();
-        
+
         // Verificar que el carrito no esté vacío
         if (cart.isEmpty()) {
             return null;
         }
-        
+
         double subtotal = cart.getTotalAmount();
         double discount = calculateDiscount(subtotal);
 
         Order order = new Order(cart.getItems(), subtotal, discount);
         orders.put(order.getOrderId(), order); // Guardamos la orden en el mapa interno
-        
+
         // No vaciamos el carrito automáticamente para permitir que el usuario lo haga explícitamente
         return order;
     }
-    
+
     /**
      * Calcula el descuento según la regla de negocio:
      * Si el total es mayor a $100,000, se aplica un 5% de descuento.
-     * 
+     *
      * @param total El monto total del pedido
      * @return El valor del descuento a aplicar
      */
@@ -64,7 +64,7 @@ public class OrderUseCase {
     public Order getOrder(String orderId) {
         return orders.get(orderId);
     }
-    
+
     /**
      * Vacía el carrito después de crear una orden
      * @return true si se vació correctamente, false si hubo algún error
