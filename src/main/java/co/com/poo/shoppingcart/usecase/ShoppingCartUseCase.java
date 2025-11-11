@@ -5,107 +5,85 @@ import co.com.poo.shoppingcart.model.CartItem;
 import co.com.poo.shoppingcart.model.Product;
 import co.com.poo.shoppingcart.service.CartRepository;
 import co.com.poo.shoppingcart.service.ProductRepository;
-import co.com.poo.shoppingcart.services.CartService;  // ✅ NUEVO
-import co.com.poo.shoppingcart.services.ProductService;  // ✅ NUEVO
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component  // ✅ NUEVO - Para que Spring Boot lo maneje
+@Component  // Caso de uso como bean del dominio
 public class ShoppingCartUseCase {
 
-    @Autowired  // ✅ NUEVO - Inyección de dependencias
-    private CartService cartService;
-
-    @Autowired  // ✅ NUEVO
-    private ProductService productService;
+    private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
     public ShoppingCartUseCase(CartRepository cartRepository, ProductRepository productRepository) {
+        this.cartRepository = cartRepository;
+        this.productRepository = productRepository;
     }
 
     /**
-     * Añade un producto al carrito de compras verificando su existencia y stock disponible
+     * Añade un producto al carrito validando ID y cantidad (>0).
+     * No gestiona stock (según requisitos).
      */
     public boolean addProductToCart(String productId, Integer quantity) {
         try {
-            Product product = productService.getProductById(Long.parseLong(productId));
-            if (product != null && quantity > 0) {
-                if (product.getStock() >= quantity) {
-                    Cart cart = cartService.getCurrentCart();
-                    cart.addItem(new CartItem(product, quantity));
-                    cartService.saveCart(cart);
-                    product.setStock(product.getStock() - quantity);
-                    return true;
-                }
-            }
-            return false;
+            if (quantity == null || quantity <= 0) return false;
+
+            Integer id = Integer.parseInt(productId);
+            Product product = productRepository.getProductById(id);
+            if (product == null) return false;
+
+            Cart cart = cartRepository.getCart();
+            cart.addItem(new CartItem(product, quantity));
+            cartRepository.saveCart(cart);
+            return true;
         } catch (NumberFormatException e) {
             return false;
         }
     }
 
     public boolean updateQuantity(String productId, Integer quantity) {
-        if (quantity <= 0) {
-            return false;
+        if (quantity == null || quantity < 0) return false;
+
+        Cart cart = cartRepository.getCart();
+        // Si cantidad = 0, eliminar ítem
+        if (quantity == 0) {
+            CartItem existingItem = cart.findItem(productId);
+            if (existingItem == null) return false;
+            cart.removeItem(productId);
+            cartRepository.saveCart(cart);
+            return true;
         }
 
-        Cart cart = cartService.getCurrentCart();
         CartItem existingItem = cart.findItem(productId);
+        if (existingItem == null) return false;
 
-        if (existingItem == null) {
-            return false;
-        }
-
-        Product product = existingItem.getProduct();
-        int currentQuantity = existingItem.getQuantity();
-        int stockNeeded = quantity - currentQuantity;
-
-        if (stockNeeded > 0 && product.getStock() < stockNeeded) {
-            return false;
-        }
-
-        product.setStock(product.getStock() - stockNeeded);
         cart.updateItem(productId, quantity);
-        cartService.saveCart(cart);
+        cartRepository.saveCart(cart);
         return true;
     }
 
     public boolean removeItem(String productId) {
-        Cart cart = cartService.getCurrentCart();
+        Cart cart = cartRepository.getCart();
         CartItem item = cart.findItem(productId);
+        if (item == null) return false;
 
-        if (item == null) {
-            return false;
-        }
-
-        Product product = item.getProduct();
-        product.setStock(product.getStock() + item.getQuantity());
         cart.removeItem(productId);
-        cartService.saveCart(cart);
+        cartRepository.saveCart(cart);
         return true;
     }
 
     public Cart viewCart() {
-        return cartService.getCurrentCart();
+        return cartRepository.getCart();
     }
 
     public boolean clearCart() {
-        Cart cart = cartService.getCurrentCart();
-
-        for (CartItem item : cart.getItems()) {
-            Product product = item.getProduct();
-            product.setStock(product.getStock() + item.getQuantity());
-        }
-
+        Cart cart = cartRepository.getCart();
         cart.clear();
-        cartService.saveCart(cart);
+        cartRepository.saveCart(cart);
         return true;
     }
 
+    // Este método queda como validación simple; el cierre real es del OrderUseCase
     public boolean processOrder() {
-        Cart cart = cartService.getCurrentCart();
-        if (cart.getItems().isEmpty()) {
-            return false;
-        }
-        return true;
+        Cart cart = cartRepository.getCart();
+        return !cart.getItems().isEmpty();
     }
 }

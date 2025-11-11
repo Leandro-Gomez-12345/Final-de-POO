@@ -102,13 +102,14 @@ public class CartService {
         Cart cart = new Cart();
         List<CartItem> items = entity.getItems().stream()
                 .map(itemEntity -> {
-                    Product product = new Product();
-                    product.setId(itemEntity.getProduct().getId().intValue());
-                    product.setName(itemEntity.getProduct().getName());
-                    product.setCategory(itemEntity.getProduct().getDescription());
-                    product.setPrice(itemEntity.getProduct().getPrice());
-                    product.setStock(itemEntity.getProduct().getStock());
-
+                    ProductEntity p = itemEntity.getProduct();
+                    Product product = new Product(
+                            p.getId().intValue(),
+                            p.getName(),
+                            p.getDescription(),  // description mapeada como category
+                            p.getPrice(),
+                            p.getStock()
+                    );
                     return new CartItem(product, itemEntity.getQuantity());
                 })
                 .collect(Collectors.toList());

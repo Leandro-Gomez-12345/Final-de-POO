@@ -131,13 +131,13 @@ public class ProductService {
      * Convierte una entidad JPA a modelo de dominio
      */
     private Product entityToModel(ProductEntity entity) {
-        Product product = new Product();
-        product.setId(entity.getId().intValue());
-        product.setName(entity.getName());
-        product.setCategory(entity.getDescription()); // Usando description como category
-        product.setPrice(entity.getPrice());
-        product.setStock(entity.getStock());
-        return product;
+        return new Product(
+                entity.getId().intValue(),
+                entity.getName(),
+                entity.getDescription(), // Usando description como category
+                entity.getPrice(),
+                entity.getStock()
+        );
     }
 
     /**
