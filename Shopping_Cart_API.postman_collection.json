@@ -1,0 +1,291 @@
+{
+	"info": {
+		"name": "Shopping Cart API - Final POO",
+		"description": "Colección completa de endpoints para el sistema de carrito de compras",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. PRODUCTOS - CRUD",
+			"item": [
+				{
+					"name": "1.1 - Ver todos los productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products"]
+						}
+					}
+				},
+				{
+					"name": "1.2 - Ver producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products", "1"]
+						}
+					}
+				},
+				{
+					"name": "1.3 - Crear producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"PlayStation 5\",\n    \"category\": \"Electrónica\",\n    \"price\": 2500000,\n    \"stock\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products"]
+						}
+					}
+				},
+				{
+					"name": "1.4 - Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mouse Gaming RGB\",\n    \"category\": \"Electrónica\",\n    \"price\": 85000,\n    \"stock\": 50\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products", "1"]
+						}
+					}
+				},
+				{
+					"name": "1.5 - Eliminar producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. CONSULTAS DE PRODUCTOS",
+			"item": [
+				{
+					"name": "2.1 - Productos por categoría",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/category/Electrónica",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products", "category", "Electrónica"]
+						}
+					}
+				},
+				{
+					"name": "2.2 - Precio mayor a X",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/price/greater-than?minPrice=100000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products", "price", "greater-than"],
+							"query": [
+								{
+									"key": "minPrice",
+									"value": "100000"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "2.3 - Rango de precios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/price/range?minPrice=50000&maxPrice=200000",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "products", "price", "range"],
+							"query": [
+								{
+									"key": "minPrice",
+									"value": "50000"
+								},
+								{
+									"key": "maxPrice",
+									"value": "200000"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. CARRITO",
+			"item": [
+				{
+					"name": "3.1 - Ver carrito",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "cart"]
+						}
+					}
+				},
+				{
+					"name": "3.2 - Agregar producto al carrito",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": 2,\n    \"quantity\": 3\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/cart/add",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "cart", "add"]
+						}
+					}
+				},
+				{
+					"name": "3.3 - Actualizar cantidad",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": 2,\n    \"quantity\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/cart/update",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "cart", "update"]
+						}
+					}
+				},
+				{
+					"name": "3.4 - Eliminar producto del carrito",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart/remove/2",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "cart", "remove", "2"]
+						}
+					}
+				},
+				{
+					"name": "3.5 - Vaciar carrito",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart/clear",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "cart", "clear"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. PEDIDOS",
+			"item": [
+				{
+					"name": "4.1 - Cerrar pedido (Checkout)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/checkout",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "orders", "checkout"]
+						}
+					}
+				},
+				{
+					"name": "4.2 - Cancelar pedido",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/cancel",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "orders", "cancel"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
